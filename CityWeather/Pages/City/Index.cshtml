@@ -1,0 +1,47 @@
+﻿@page
+@model CityWeather.Pages.City.IndexModel
+@{
+}
+
+<style>
+	/* Add your CSS styles here */
+	.delete-button {
+		background-color: red;
+		color: white;
+		/* Add additional styles as needed */
+	}
+</style>
+
+<br>
+<h2>List of Cities</h2>
+<a class="btn btn-primary btn-sm" href="/City/Create City/Create">Add City</a>
+
+<table class="table">
+	<thread>
+		<tr>
+			<th>#</th>
+			<th>City Name</th>
+			<th>Latitude</th>
+			<th>Longtitude</th>
+			<th>Last Modify</th>
+		</tr>
+	</thread>
+
+	<tbody>
+		@foreach(var item in Model.ListCity)
+		{
+			<tr>
+				<td>@item.num</td>
+				<td>@item.cityname</td>
+				<td>@item.latitude</td>
+				<td>@item.longtitude</td>
+				<td>@item.last_modify</td>
+
+				<td>
+					<a class="btn btn-primary btn-sm" href="/City/Edit?id=@item.id">Edit</a>
+					<a class="btn btn-primary btn-sm delete-button" href="/City/Delete?id=@item.id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

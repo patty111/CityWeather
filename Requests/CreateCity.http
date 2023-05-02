@@ -1,0 +1,10 @@
+# https://blog.csdn.net/LeeN7/article/details/118551832?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-118551832-blog-112281681.235%5Ev32%5Epc_relevant_increate_t0_download_v2_base&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-118551832-blog-112281681.235%5Ev32%5Epc_relevant_increate_t0_download_v2_base&utm_relevant_index=2
+
+POST http://localhost:5210/city HTTP/1.1
+
+Content-Type: application/json
+{
+    "Name": "Taipei",
+    "Latitude" : 25.105497,
+    "Longitude" : 121.597366
+}

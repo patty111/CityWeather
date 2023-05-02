@@ -1,0 +1,50 @@
+﻿@page
+@model CityWeather.Pages.City.Create_City.CreateModel
+@{
+}
+
+<br>
+<h2>Add City</h2>
+@if (Model.errorMsg.Length > 0)  
+{
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>@Model.errorMsg</strong>
+	</div>
+
+}
+
+
+<form method="POST">
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">City Name</label>
+		<div class="sol-sm-6">
+			<input type="text" class="form-control" name="cityname" value="">
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Latitude</label>
+		<div class="sol-sm-6">
+			<input type="text" class="form-control" name="latitude" value="">
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Longtitude</label>
+		<div class="sol-sm-6">
+			<input type="text" class="form-control" name="longtitude" value="">
+		</div>
+	</div>
+
+	<br>
+
+	<div class="row mb-3">
+		<div class="col-sm-3 offset-sm-3">
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</div>
+		<div class="col-sm-3">
+			<a class="btn btn-outline-primary" href="../../City" role="button">Cancel</a>
+		</div>
+	</div>
+
+</form>
