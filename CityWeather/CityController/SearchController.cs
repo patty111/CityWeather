@@ -19,33 +19,31 @@ namespace CityWeather.CityController
                 {
                     connection.Open();
                     String query = "SELECT * FROM Cities WHERE cityname = @cityname";
-                    
-                    using (SqlCommand command = new SqlCommand(query, connection))
+
+                    using SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@cityname", cityname);
+
+                    using var reader = command.ExecuteReader();
+                    if (reader.Read())
                     {
-                        command.Parameters.AddWithValue("@cityname", cityname);
 
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        String cityId = reader.GetSqlGuid(0).ToString();
+                        String formatLatitude = reader.GetSqlDecimal(2).ToString();
+                        String formatLongitude = reader.GetSqlDecimal(3).ToString();
+                        String temp = (reader.GetSqlDecimal(4) - 273.15m).ToString();
+                        String lastModify = reader.GetSqlDateTime(5).ToString();
+                        String City = reader.GetSqlString(1).ToString();
+
+
+                        return Ok(new
                         {
-                            if (reader.Read())
-                            {
-
-                                String cityId = reader.GetSqlGuid(0).ToString();
-                                String formatLatitude = reader.GetSqlDecimal(2).ToString();
-                                String formatLongitude = reader.GetSqlDecimal(3).ToString();
-                                String temp = (reader.GetSqlDecimal(4) - 273.15m).ToString();
-                                String lastModify = reader.GetSqlDateTime(5).ToString();
-
-                                return Ok(new
-                                {
-                                    id = cityId,
-                                    cityname = reader.GetSqlString(1),
-                                    latitude = formatLatitude,
-                                    longitude = formatLongitude,
-                                    temperature = temp,
-                                    last_modify = lastModify
-                                });
-                            }
-                        }
+                            id = cityId,
+                            cityname = City,
+                            latitude = formatLatitude,
+                            longitude = formatLongitude,
+                            temperature = temp,
+                            last_modify = lastModify
+                        });
                     }
                 }
                 return NotFound();
