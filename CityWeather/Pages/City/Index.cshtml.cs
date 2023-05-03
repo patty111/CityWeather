@@ -6,31 +6,36 @@ namespace CityWeather.Pages.City
 {
     public class IndexModel : PageModel
     {
-        public List<CityInfo> ListCity = new List<CityInfo>();
+        public List<CityInfo> ListCity = new();
         public void OnGet()
         {
             try
             {
                 String connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=dev-test;Integrated Security=True";
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new(connectionString))
                 {
                     connection.Open();
                     String sql = "SELECT * FROM Cities";
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (SqlCommand command = new(sql, connection))
                     { 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             var row_num = 1;
                             while (reader.Read())
                             {
-                                CityInfo cityInfo = new CityInfo();
-                                cityInfo.num = row_num.ToString();
-                                cityInfo.cityname = reader.GetString(1);
-                                cityInfo.latitude = "" + reader.GetSqlDecimal(2);
-                                cityInfo.longtitude = "" + reader.GetSqlDecimal(3);
-                                cityInfo.last_modify = "" + reader.GetSqlDateTime(4);
-                                cityInfo.id = reader.GetSqlGuid(0).ToString();
-                                ListCity.Add(cityInfo);
+								CityInfo cityInfo = new()
+								{
+									num = row_num.ToString(),
+									cityname = reader.GetString(1),
+									latitude = "" + reader.GetSqlDecimal(2),
+									longtitude = "" + reader.GetSqlDecimal(3),
+                                    temperature = "" + (reader.GetSqlDecimal(4).Value - 273.15m), // m specifies that it is type decimal
+									last_modify = "" + reader.GetSqlDateTime(5),
+									id = reader.GetSqlGuid(0).ToString()
+								};
+
+
+								ListCity.Add(cityInfo);
                                 row_num++;
                             }
                         }
@@ -45,9 +50,9 @@ namespace CityWeather.Pages.City
             {
                 Console.WriteLine("Exception: ", ex.ToString());            
             }
+            return;
         }
 
-        
 	}
 
 	public class CityInfo
@@ -56,6 +61,7 @@ namespace CityWeather.Pages.City
 		public String cityname;
 		public String latitude;
 		public String longtitude;
+        public String temperature;
 		public String last_modify;
 		public String id;
 

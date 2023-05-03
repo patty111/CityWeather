@@ -12,9 +12,13 @@
 	}
 </style>
 
+
 <br>
 <h2>List of Cities</h2>
 <a class="btn btn-primary btn-sm" href="/City/Create City/Create">Add City</a>
+
+@*reload button*@
+<button class="refresh-button" onclick="location.reload()">&#x21bb;</button>
 
 <table class="table">
 	<thread>
@@ -23,6 +27,7 @@
 			<th>City Name</th>
 			<th>Latitude</th>
 			<th>Longtitude</th>
+			<th>Temperature</th>
 			<th>Last Modify</th>
 		</tr>
 	</thread>
@@ -35,6 +40,7 @@
 				<td>@item.cityname</td>
 				<td>@item.latitude</td>
 				<td>@item.longtitude</td>
+				<td>@item.temperature  °C</td>
 				<td>@item.last_modify</td>
 
 				<td>

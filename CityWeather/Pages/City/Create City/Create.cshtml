@@ -9,7 +9,10 @@
 {
 	<div class="alert alert-warning alert-dismissible fade show" role="alert">
 		<strong>@Model.errorMsg</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> </button>
 	</div>
+
+
 
 }
 
@@ -18,23 +21,32 @@
 	<div class="row mb-3">
 		<label class="col-sm-3 col-form-label">City Name</label>
 		<div class="sol-sm-6">
-			<input type="text" class="form-control" name="cityname" value="">
+			<input type="text" class="form-control" name="cityname" value="@Model.cityInfo.cityname">
 		</div>
 	</div>
 
 	<div class="row mb-3">
 		<label class="col-sm-3 col-form-label">Latitude</label>
 		<div class="sol-sm-6">
-			<input type="text" class="form-control" name="latitude" value="">
+			<input type="text" class="form-control" name="latitude" value="@Model.cityInfo.latitude">
 		</div>
 	</div>
 
 	<div class="row mb-3">
 		<label class="col-sm-3 col-form-label">Longtitude</label>
 		<div class="sol-sm-6">
-			<input type="text" class="form-control" name="longtitude" value="">
+			<input type="text" class="form-control" name="longtitude" value="@Model.cityInfo.longtitude">
 		</div>
 	</div>
+
+	@if (Model.successMsg.Length > 0)
+	{
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>@Model.successMsg</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> </button>
+		</div>
+
+	}
 
 	<br>
 
