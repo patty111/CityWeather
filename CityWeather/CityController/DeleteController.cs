@@ -7,7 +7,7 @@ namespace CityWeather.CityController
 
     public class DeleteController : Controller
     {
-        [HttpDelete("delete")]
+        [HttpDelete()]
         public IActionResult DeleteCity([FromQuery]String cityname)
         {
             try

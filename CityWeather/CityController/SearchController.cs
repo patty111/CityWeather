@@ -7,7 +7,7 @@ namespace CityWeather.CityController
     [Route("citydata")]
     public class SearchController : Controller
     {
-        [HttpGet("search")]
+        [HttpGet()]
         public IActionResult SearchCity([FromQuery]String cityname)
         {
             try
@@ -38,7 +38,7 @@ namespace CityWeather.CityController
                                 return Ok(new
                                 {
                                     id = cityId,
-                                    cityname = cityname,
+                                    cityname = reader.GetSqlString(1),
                                     latitude = formatLatitude,
                                     longitude = formatLongitude,
                                     temperature = temp,

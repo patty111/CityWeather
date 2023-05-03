@@ -8,7 +8,7 @@ namespace CityWeather.CityContoller;
 [Route("citydata")]
 public class AddController : Controller
 {
-    [HttpPost("addcity")]
+    [HttpPost()]
     public IActionResult CreateCity([FromQuery]String cityname, [FromQuery]decimal latitude, [FromQuery] decimal longitude)
     {
         String errorMsg = "";
@@ -65,11 +65,11 @@ public class AddController : Controller
         return Ok(new
         {
             ID = id.ToString(),
-            CityName = cityname,
-            Latitude = formattedLatitude,
-            Longitude = formattedLongitude,
-            Temperature = "0",
-            LastModified = lastModified.ToString(),
+            cityname = cityname,
+            latitude = formattedLatitude,
+            longitude = formattedLongitude,
+            temperature = "0",
+            last_modify = lastModified.ToString()
         });
     }
 
