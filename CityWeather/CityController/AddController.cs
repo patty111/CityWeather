@@ -1,5 +1,6 @@
+using CityWeather.CityController;
 using Microsoft.AspNetCore.Mvc;
-using City.Contract;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace CityWeather.CityContoller;
@@ -9,15 +10,19 @@ namespace CityWeather.CityContoller;
 public class AddController : Controller
 {
     [HttpPost()]
-    public IActionResult CreateCity([FromQuery]String cityname, [FromQuery]decimal latitude, [FromQuery] decimal longitude)
+    public IActionResult CreateCity(String cityname, decimal latitude, decimal longitude)
     {
         String errorMsg = "";
+        CityDTO City = new CityDTO();
+        WeatherDTO Weather = new WeatherDTO();
 
-        Guid id = Guid.NewGuid();
-        String formattedLatitude = latitude.ToString();
-        String formattedLongitude = longitude.ToString();
-        DateTime lastModified = DateTime.Now;
-
+        City.Id = Guid.NewGuid();
+        City.CityName = cityname;
+        City.Latitude = latitude;
+        City.Longitude = longitude;
+        Weather.Temperature = 0;
+        Weather.LastModified = DateTime.Now;
+        
         try
         {
             String connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=dev-test;" +
@@ -38,45 +43,33 @@ public class AddController : Controller
                 }
 
 
-                String add = "INSERT INTO Cities" +
+                String query = "INSERT INTO Cities" +
                     "(id, cityname, latitude, longitude, temperature, last_modify) VALUES " +
                     "(@id, @cityname, @latitude, @longitude, @temperature, @last_modify)";
 
-                using (SqlCommand command = new SqlCommand(add, connection))
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@id", id);
-                    command.Parameters.AddWithValue("@cityname", cityname);
-                    command.Parameters.AddWithValue("@latitude", formattedLatitude);
-                    command.Parameters.AddWithValue("@longitude", formattedLongitude);
+                    command.Parameters.AddWithValue("@id", City.Id);
+                    command.Parameters.AddWithValue("@cityname", City.CityName);
+                    command.Parameters.AddWithValue("@latitude", City.Latitude);
+                    command.Parameters.AddWithValue("@longitude", City.Longitude);
                     command.Parameters.AddWithValue("@temperature", 0);
-                    command.Parameters.AddWithValue("@last_modify", DateTime.Now);
+                    command.Parameters.AddWithValue("@last_modify", Weather.LastModified);
 
                     command.ExecuteNonQuery();
                 }
             }
         }
-
         catch (Exception ex)
         {
             return StatusCode(500, ex.Message);
         }
 
-
         return Ok(new
         {
-            ID = id.ToString(),
-            cityname = cityname,
-            latitude = formattedLatitude,
-            longitude = formattedLongitude,
-            temperature = "0",
-            last_modify = lastModified.ToString()
+            City = City,
+            Weather = Weather
         });
     }
-
-
-
-
-
-
-
 }

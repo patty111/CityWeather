@@ -1,7 +1,6 @@
-﻿using City.Contract;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Data.SqlClient;
-using System.Reflection.PortableExecutable;
 
 namespace CityWeather.CityController
 {
@@ -10,16 +9,24 @@ namespace CityWeather.CityController
     public class UpsertController : Controller
     {
         [HttpPut()]
-        public IActionResult UpsertCity(String cityname, Decimal latitude, Decimal longitude, Decimal temp)
+        public IActionResult UpsertCity(string cityname, decimal latitude, decimal longitude, decimal temp)
         {
+            CityDTO city = new CityDTO();
+            WeatherDTO weather = new WeatherDTO();
+            city.CityName = cityname;
+            city.Latitude = latitude;
+            city.Longitude = longitude;
+            weather.Temperature = temp;
+            weather.LastModified = DateTime.Now;
+
             try
             {
-                String connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=dev-test;" +
+                string connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=dev-test;" +
                     "Integrated Security=True";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    String upsertQuery = "UPDATE Cities " +
+                    string upsertQuery = "UPDATE Cities " +
                         "SET latitude = @latitude, longitude = @longitude, temperature = @temp, " +
                         "last_modify = @last_modify " +
                         "OUTPUT INSERTED.id " +  // Retrieve the ID of the updated city
@@ -27,28 +34,23 @@ namespace CityWeather.CityController
 
                     using SqlCommand command = new SqlCommand(upsertQuery, connection);
                     {
-                        DateTime last_modify = DateTime.Now;
-
-                        command.Parameters.AddWithValue("@cityname", cityname);
-                        command.Parameters.AddWithValue("@latitude", latitude);
-                        command.Parameters.AddWithValue("@longitude", longitude);
-                        command.Parameters.AddWithValue("@temp", temp);
-                        command.Parameters.AddWithValue("@last_modify", last_modify);
-
+                        command.Parameters.AddWithValue("@cityname", city.CityName);
+                        command.Parameters.AddWithValue("@latitude", city.Latitude);
+                        command.Parameters.AddWithValue("@longitude", city.Longitude);
+                        command.Parameters.AddWithValue("@temp", weather.Temperature);
+                        command.Parameters.AddWithValue("@last_modify", weather.LastModified);
 
                         object idResult = command.ExecuteScalar();
                         Guid cityId = idResult != null ? (Guid)idResult : Guid.Empty;
 
                         if (cityId != Guid.Empty)
                         {
+                            city.Id = cityId;
+
                             return Ok(new
                             {
-                                id = cityId,
-                                cityname = cityname,
-                                latitude = latitude,
-                                longitude = longitude,
-                                temperature = temp,
-                                last_modify = last_modify.ToString(),
+                                City = city,
+                                Weather = weather,
                             });
                         }
 
@@ -56,7 +58,6 @@ namespace CityWeather.CityController
                     }
                 }
             }
-
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
