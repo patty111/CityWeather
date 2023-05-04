@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Data.SqlClient;
 
 namespace CityWeather.WeatherController
 {
+
     [ApiController]
     [Route("weathersearch")]
     public class WeatherSearchController : Controller
     {
+        String connectionString = "Data Source=.\\SQLExpress;Initial Catalog=dev-test;Integrated Security=True";
+
         private static readonly HttpClient _httpClient = new();
         private static readonly String _apiKey = "8cb8460525cde5bbc3891e8f3e150bfc";
 
@@ -33,8 +37,29 @@ namespace CityWeather.WeatherController
                     longitude = jsonObject.coord.lon.ToString(),
                     temperature = jsonObject.main.temp.ToString(),
                     description = jsonObject.weather[0].description,
-
                 };
+
+
+
+                using SqlConnection connection = new SqlConnection(connectionString);
+                {
+                    connection.Open();
+
+                    String query = "INSERT INTO weather" +
+                    "(search_time, latitude, longitude, temperature, descript) VALUES " +
+                    "(@search_time, @latitude, @longitude, @temperature, @descript)";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@search_time", DateTime.Now);
+                        command.Parameters.AddWithValue("@latitude", searchResponse.latitude);
+                        command.Parameters.AddWithValue("@longitude", searchResponse.longitude);
+                        command.Parameters.AddWithValue("@temperature", searchResponse.temperature);
+                        command.Parameters.AddWithValue("@descript", searchResponse.description);
+                        command.ExecuteNonQuery();
+                    }
+                }
+
 
                 return Ok(JsonConvert.SerializeObject(searchResponse));
             }

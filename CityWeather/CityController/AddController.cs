@@ -50,12 +50,13 @@ public class AddController : Controller
         try
         {
             String connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=dev-test;" +
-                "Integrated Security=True";
+               "Integrated Security=True";
+
             using SqlConnection connection = new SqlConnection(connectionString);
             {
                 connection.Open();
 
-                String checkQuery = "SELECT COUNT(*) FROM Cities WHERE cityname = @cityname";
+                String checkQuery = "SELECT COUNT * FROM Cities WHERE cityname = @cityname";
                 using SqlCommand checkCommand = new SqlCommand(checkQuery, connection);
                 checkCommand.Parameters.AddWithValue("@cityname", cityname);
 
@@ -68,7 +69,7 @@ public class AddController : Controller
 
 
                 String query = "INSERT INTO Cities" +
-                    "(id, cityname, latitude, longitude, temperature, last_modify) VALUES " +
+                    "(id, cityname, latitude, longitude, temperature, descript) VALUES " +
                     "(@id, @cityname, @latitude, @longitude, @temperature, @last_modify)";
 
 

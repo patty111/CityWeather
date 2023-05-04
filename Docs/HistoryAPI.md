@@ -1,6 +1,13 @@
 # History API
-  - [Delete History](#deletecontroller)
-  - [Retrieve History](#retrievecontroller)
+- [History API](#history-api)
+  - [DeleteController](#deletecontroller)
+    - [Request](#request)
+    - [Response](#response)
+      - [Success](#success)
+  - [RetrieveController](#retrievecontroller)
+    - [Request](#request-1)
+    - [Response](#response-1)
+      - [Success](#success-1)
 
 ## DeleteController
 Delete search history.

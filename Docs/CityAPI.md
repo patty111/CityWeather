@@ -1,8 +1,27 @@
 ## CityWeather API
-  - [Add City](#addcontroller)
-  - [Delete](#deletecontroller)
-  - [Search](#searchcontroller)
-  - [Edit](#upsertcontroller)   
+- [CityWeather API](#cityweather-api)
+  - [AddController](#addcontroller)
+    - [Request](#request)
+    - [Response](#response)
+      - [Success](#success)
+      - [Already Exist](#already-exist)
+      - [Latitude or Longitude Out of Range](#latitude-or-longitude-out-of-range)
+  - [DeleteController](#deletecontroller)
+    - [Request](#request-1)
+    - [Response](#response-1)
+      - [Success](#success-1)
+      - [Not Found](#not-found)
+  - [SearchController](#searchcontroller)
+    - [Request](#request-2)
+    - [Response](#response-2)
+      - [Success](#success-2)
+      - [Not Found](#not-found-1)
+  - [UpsertController](#upsertcontroller)
+    - [Request](#request-3)
+    - [Response](#response-3)
+      - [Success](#success-3)
+      - [Latitude or Longitude Out of Range](#latitude-or-longitude-out-of-range-1)
+
   
 > Temperatures are stored in Kelvin unit 
 
