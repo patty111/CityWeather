@@ -31,7 +31,6 @@ namespace CityWeather.History
                 connection.Open();
 
                 using SqlCommand command = new SqlCommand(query, connection);
-                Console.WriteLine(Weather.LastModified);
 
                 command.Parameters.AddWithValue("@cityname", City.CityName);
                 command.Parameters.AddWithValue("@latitude", City.Latitude != null ? City.Latitude : DBNull.Value);

@@ -28,7 +28,7 @@ namespace CityWeather.Pages.City
 									num = row_num.ToString(),
 									cityname = reader.GetString(1),
 									latitude = "" + reader.GetSqlDecimal(2),
-									longtitude = "" + reader.GetSqlDecimal(3),
+									longitude = "" + reader.GetSqlDecimal(3),
                                     temperature = "" + (reader.GetSqlDecimal(4).Value - 273.15m), // m specifies that it is type decimal
 									last_modify = "" + reader.GetSqlDateTime(5),
 									id = reader.GetSqlGuid(0).ToString()
@@ -60,7 +60,7 @@ namespace CityWeather.Pages.City
 		public String num;
 		public String cityname;
 		public String latitude;
-		public String longtitude;
+		public String longitude;
         public String temperature;
 		public String last_modify;
 		public String id;

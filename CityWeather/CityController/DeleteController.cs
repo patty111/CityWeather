@@ -25,18 +25,11 @@ namespace CityWeather.CityController
                         int rows_affected = command.ExecuteNonQuery();
                         if (rows_affected > 0)
                         {
-                            return Ok(new
-                            {
-                                Msg = "City successfully deleted"
-                            });
+                            return NoContent();
                         }
                         else
                         {
-                            return NotFound(new
-                            {
-                                Msg = "City not found",
-                                status = "404"
-                            });
+                            return NotFound();
                         }
 
                     }

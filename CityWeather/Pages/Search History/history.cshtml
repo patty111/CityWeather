@@ -1,0 +1,60 @@
+﻿@page
+@model CityWeather.Pages.Search_History.HistoryPageModel
+@{
+}
+
+
+
+
+<br>
+<h2>Search History</h2>
+
+@*reload button*@
+<button class="refresh-button" onclick="location.reload()">&#x21bb;</button>
+
+<style>
+	.delete-button {
+		background-color: transparent;
+		border: none;
+		color: red;
+	}
+</style>
+
+<table class="table">
+	<thread>
+		<tr>
+			<th>#</th>
+			<th>City Name</th>
+			<th>Latitude</th>
+			<th>Longtitude</th>
+			<th>Temperature</th>
+			<th>Last Modify</th>
+			<th>Search Time</th>
+
+		</tr>
+	</thread>
+
+	<tbody>
+		@foreach(var item in Model.ListSearch)
+		{
+			<tr>
+				<td>@item.num</td>
+				<td>@item.cityname</td>
+				<td>@item.latitude</td>
+				<td>@item.longitude</td>
+				<td>@item.temperature  °C</td>
+				<td>@item.last_modify</td>
+				<td>@item.search_time</td>
+
+				<td>
+					@*
+					<form method="delete" action="/Search History/Delete">
+						<input type="hidden" name="search_time" value="@item.search_time" />
+						<button class="delete-button" onclick="deleteItem('@item.num')" type="submit">✖</button>
+					</form>
+					*@
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

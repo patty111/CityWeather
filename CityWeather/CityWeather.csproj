@@ -1,20 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <Compile Remove="Pages\History\**" />
-    <Content Remove="Pages\History\**" />
-    <EmbeddedResource Remove="Pages\History\**" />
-    <None Remove="Pages\History\**" />
+    <Compile Remove="Pages\Temperature\**" />
+    <Content Remove="Pages\Temperature\**" />
+    <EmbeddedResource Remove="Pages\Temperature\**" />
+    <None Remove="Pages\Temperature\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\Temperature\" />
   </ItemGroup>
 
   <PropertyGroup>

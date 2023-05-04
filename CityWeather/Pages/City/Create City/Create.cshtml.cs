@@ -16,7 +16,7 @@ namespace CityWeather.Pages.City.Create_City
             cityInfo.id = Guid.NewGuid().ToString();
 			cityInfo.cityname = Request.Form["cityname"];
 			cityInfo.latitude = Request.Form["latitude"];
-			cityInfo.longtitude = Request.Form["longtitude"];
+			cityInfo.longitude = Request.Form["longitude"];
 
           //  cityInfo.temperature = await GetWeather.GetTempData(cityInfo.cityname);
 
@@ -26,10 +26,10 @@ namespace CityWeather.Pages.City.Create_City
 
 
 			bool validLatitude = Regex.IsMatch(cityInfo.latitude, @"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$");
-			bool validLongtitude = Regex.IsMatch(cityInfo.longtitude, @"^[-+]?((1[0-7]|[1-9])?\d(\.\d+)?|180(\.0+)?)$");
+			bool validLongtitude = Regex.IsMatch(cityInfo.longitude, @"^[-+]?((1[0-7]|[1-9])?\d(\.\d+)?|180(\.0+)?)$");
 
             if (String.IsNullOrEmpty(cityInfo.cityname) || String.IsNullOrEmpty(cityInfo.latitude) 
-                || String.IsNullOrEmpty(cityInfo.longtitude))
+                || String.IsNullOrEmpty(cityInfo.longitude))
             {
 				errorMsg = "All fields must be filled";
 				return;
@@ -65,7 +65,7 @@ namespace CityWeather.Pages.City.Create_City
 						command.Parameters.AddWithValue("@id", cityInfo.id);
 						command.Parameters.AddWithValue("@cityname", cityInfo.cityname);
 						command.Parameters.AddWithValue("@latitude", cityInfo.latitude);
-						command.Parameters.AddWithValue("@longitude", cityInfo.longtitude);
+						command.Parameters.AddWithValue("@longitude", cityInfo.longitude);
 						command.Parameters.AddWithValue("@temperature", 0);
 						command.Parameters.AddWithValue("@last_modify", DateTime.Now);
 
@@ -85,7 +85,7 @@ namespace CityWeather.Pages.City.Create_City
 
 			cityInfo.cityname = "";
             cityInfo.latitude = "";
-            cityInfo.longtitude = "";
+            cityInfo.longitude = "";
             cityInfo.id = "";
             cityInfo.last_modify = "";
             cityInfo.temperature = "";

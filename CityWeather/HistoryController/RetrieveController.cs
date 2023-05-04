@@ -13,7 +13,13 @@ namespace CityWeather.HistoryController
             List<HistoryObject> historyObjects = historyManager.HistoryPeek(retrieve_nums);
             List<String> convert = new List<String>();
 
-            foreach (HistoryObject historyObject in historyObjects) { convert.Add(historyObject.ToString());}
+            foreach (HistoryObject historyObject in historyObjects)
+            { 
+                String tmp = historyObject.ToString();
+                int startIdx = tmp.IndexOf("{") + 2;
+                int endIdx = tmp.IndexOf("}");
+                convert.Add(tmp.Substring(startIdx, endIdx - startIdx));
+            }
             
             return Ok(convert);
         }

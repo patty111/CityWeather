@@ -1,6 +1,6 @@
 using CityWeather.CityController;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.Data.SqlClient;
 
 namespace CityWeather.CityContoller;
@@ -9,8 +9,32 @@ namespace CityWeather.CityContoller;
 [Route("citydata")]
 public class AddController : Controller
 {
+    private static readonly HttpClient _httpClient = new();
+    private static readonly String _apiKey = "8cb8460525cde5bbc3891e8f3e150bfc";
+
+    public async Task<Decimal> GetTemp(Decimal lat, Decimal lon)
+    {
+        try
+        {
+            String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={_apiKey}";
+            Uri uri = new Uri(url);
+
+            using HttpResponseMessage response = await _httpClient.GetAsync(uri);
+            Console.WriteLine(response.EnsureSuccessStatusCode().ToString());
+
+            String jsonResponse = await response.Content.ReadAsStringAsync();
+            dynamic jsonObject = JsonConvert.DeserializeObject(jsonResponse);
+            return jsonObject.main.temp;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+        }
+    }
+
+
     [HttpPost()]
-    public IActionResult CreateCity(String cityname, decimal latitude, decimal longitude)
+    public async Task<IActionResult> CreateCity(String cityname, decimal latitude, decimal longitude)
     {
         String errorMsg = "";
         CityDTO City = new CityDTO();
@@ -20,7 +44,7 @@ public class AddController : Controller
         City.CityName = cityname;
         City.Latitude = latitude;
         City.Longitude = longitude;
-        Weather.Temperature = 0;
+        Weather.Temperature = await GetTemp(latitude, longitude);
         Weather.LastModified = DateTime.Now;
         
         try
@@ -54,7 +78,7 @@ public class AddController : Controller
                     command.Parameters.AddWithValue("@cityname", City.CityName);
                     command.Parameters.AddWithValue("@latitude", City.Latitude);
                     command.Parameters.AddWithValue("@longitude", City.Longitude);
-                    command.Parameters.AddWithValue("@temperature", 0);
+                    command.Parameters.AddWithValue("@temperature", Weather.Temperature);
                     command.Parameters.AddWithValue("@last_modify", Weather.LastModified);
 
                     command.ExecuteNonQuery();
@@ -66,7 +90,7 @@ public class AddController : Controller
             return StatusCode(500, ex.Message);
         }
 
-        return Ok(new
+        return Created("/citydata", new
         {
             City = City,
             Weather = Weather

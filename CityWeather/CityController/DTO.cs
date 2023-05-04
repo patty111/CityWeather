@@ -1,4 +1,6 @@
-﻿namespace CityWeather.CityController
+﻿using System.Data.SqlTypes;
+
+namespace CityWeather.CityController
 {
     public class CityDTO
     {
