@@ -1,4 +1,5 @@
 using CityWeather.CityController;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
@@ -9,14 +10,19 @@ namespace CityWeather.CityContoller;
 [Route("citydata")]
 public class AddController : Controller
 {
+    private readonly IConfiguration _configuration;
     private static readonly HttpClient _httpClient = new();
-    private static readonly String _apiKey = "8cb8460525cde5bbc3891e8f3e150bfc";
-
+    public AddController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+    
     public async Task<Decimal> GetTemp(Decimal lat, Decimal lon)
     {
         try
         {
-            String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={_apiKey}";
+            String apiKey = _configuration["ApiSettings:ApiKey"];
+            String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
             Uri uri = new Uri(url);
 
             using HttpResponseMessage response = await _httpClient.GetAsync(uri);
