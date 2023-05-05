@@ -1,4 +1,5 @@
 using CityWeather.CityController;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
@@ -9,6 +10,7 @@ namespace CityWeather.CityContoller;
 [Route("citydata")]
 public class AddController : Controller
 {
+    private readonly IConfiguration _configuration;
     private readonly IConfiguration _configuration;
     private static readonly HttpClient _httpClient = new();
 
@@ -21,6 +23,8 @@ public class AddController : Controller
     {
         try
         {
+            String apiKey = _configuration["ApiSettings:ApiKey"];
+            String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
             String apiKey = _configuration["ApiSettings:ApiKey"];
             String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
             Uri uri = new Uri(url);
