@@ -11,7 +11,6 @@ namespace CityWeather.CityContoller;
 public class AddController : Controller
 {
     private readonly IConfiguration _configuration;
-    private readonly IConfiguration _configuration;
     private static readonly HttpClient _httpClient = new();
 
     public AddController(IConfiguration configuration)
