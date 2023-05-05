@@ -1,26 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using CityWeather.History;
-namespace CityWeather.HistoryController
+using System.Collections.Generic;
+
+namespace CityWeather.Controllers.HistoryController
 {
     [ApiController]
     [Route("historydata")]
-    public class RetrieveController : Controller
+    public class RetrieveController : ControllerBase
     {
-        [HttpGet()]
+        private readonly HistoryManager historyManager;
+
+        public RetrieveController(IConfiguration configuration)
+        {
+            historyManager = new HistoryManager(configuration);
+        }
+
+        [HttpGet]
         public IActionResult Retrieve(int retrieve_nums)
         {
-            HistoryManager historyManager = new HistoryManager();
             List<HistoryObject> historyObjects = historyManager.HistoryPeek(retrieve_nums);
-            List<String> convert = new List<String>();
+            List<string> convert = new List<string>();
 
             foreach (HistoryObject historyObject in historyObjects)
-            { 
-                String tmp = historyObject.ToString();
+            {
+                string tmp = historyObject.ToString();
                 int startIdx = tmp.IndexOf("{") + 2;
                 int endIdx = tmp.IndexOf("}");
                 convert.Add(tmp.Substring(startIdx, endIdx - startIdx));
             }
-            
+
             return Ok(convert);
         }
     }

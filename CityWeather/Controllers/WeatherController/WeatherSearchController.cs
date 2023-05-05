@@ -2,21 +2,19 @@
 using Newtonsoft.Json;
 using System.Data.SqlClient;
 
-namespace CityWeather.WeatherController
+namespace CityWeather.Controllers.WeatherController
 {
 
     [ApiController]
     [Route("weathersearch")]
-    public class WeatherSearchController : Controller
+    public class WeatherSearchController : BaseController
     {
-        String connectionString = "Data Source=.\\SQLExpress;Initial Catalog=dev-test;Integrated Security=True";
-        
+        public WeatherSearchController(IConfiguration configuration) : base(configuration)
+        {
+        }
+
         private readonly IConfiguration _configuration;
         private static readonly HttpClient _httpClient = new();
-        public WeatherSearchController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
 
 
         [HttpGet]
@@ -24,14 +22,15 @@ namespace CityWeather.WeatherController
         {
             try
             {
-                String apiKey = _configuration["WeatherAPIKey"];
-                String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
+                string connectionString = Configuration.GetConnectionString("DefaultConnection");
+                string apiKey = Configuration["APISettings:apiKey"];
+                string url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
                 Uri uri = new Uri(url);
 
 
                 using HttpResponseMessage response = await _httpClient.GetAsync(uri);
 
-                String jsonResponse = await response.Content.ReadAsStringAsync();
+                string jsonResponse = await response.Content.ReadAsStringAsync();
                 var jsonObject = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
 
 
@@ -51,7 +50,7 @@ namespace CityWeather.WeatherController
                 {
                     connection.Open();
 
-                    String query = "INSERT INTO weather" +
+                    string query = "INSERT INTO weather" +
                     "(search_time, latitude, longitude, temperature, descript) VALUES " +
                     "(@search_time, @latitude, @longitude, @temperature, @descript)";
 
@@ -66,10 +65,9 @@ namespace CityWeather.WeatherController
                     }
                 }
 
-
                 return Ok(JsonConvert.SerializeObject(searchResponse));
             }
-            
+
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -78,12 +76,12 @@ namespace CityWeather.WeatherController
 
         private class SearchResponse
         {
-            public String country;
-            public String cityname;
-            public String latitude;
-            public String longitude;
-            public String temperature;
-            public String description;
+            public string country;
+            public string cityname;
+            public string latitude;
+            public string longitude;
+            public string temperature;
+            public string description;
         }
     }
 }

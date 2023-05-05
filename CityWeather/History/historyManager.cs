@@ -1,6 +1,5 @@
-﻿using CityWeather.CityController;
+﻿using CityWeather.Models;
 using System.Data.SqlClient;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CityWeather.History
 {
@@ -16,8 +15,13 @@ namespace CityWeather.History
 
     public class HistoryManager
     {
-        readonly string connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=dev-test;" +
-                "Integrated Security=True";
+        private readonly string connectionString;
+
+        public HistoryManager(IConfiguration configuration)
+        {
+            connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
+        // readonly string connectionString = "data source=LAPTOP-94PV8BS6\\SQLEXPRESS;initial catalog=dev-test;trusted_connection=true";
         public void HistoryAdd(CityDTO City, WeatherDTO Weather)
         {
 
@@ -41,7 +45,6 @@ namespace CityWeather.History
                 command.ExecuteNonQuery();
             }
         }
-
 
 
         public List<HistoryObject> HistoryPeek(int retrieve_nums)
@@ -119,11 +122,5 @@ namespace CityWeather.History
                 }
             }
         }
-
-
-
-
-
-
     }
 }

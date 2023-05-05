@@ -1,14 +1,25 @@
-﻿@page 
+﻿@page
+@using Microsoft.Extensions.Configuration
 @using System.Data.SqlClient;
+
 @{
+    IConfiguration configuration;
+
     try
     {
-        String id = Request.Query["id"];
-        String connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=dev-test;Integrated Security=True";
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+
+        configuration = builder.Build();
+
+        string id = Request.Query["id"];
+        string connectionString = configuration.GetConnectionString("DefaultConnection");
+
         using SqlConnection connection = new SqlConnection(connectionString);
         {
             connection.Open();
-            String del = "DELETE FROM Cities WHERE id = @id";
+            string del = "DELETE FROM Cities WHERE id = @id";
 
             using (SqlCommand command = new SqlCommand(del, connection))
             {
@@ -16,10 +27,10 @@
                 command.ExecuteNonQuery();
             }
         }
-
     }
     catch (Exception ex)
     {
+        // Handle the exception if needed
         return;
     }
 

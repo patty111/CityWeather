@@ -1,68 +1,72 @@
-
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data.SqlClient;
-using CityWeather.CityController;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 
 namespace CityWeather.Pages.Search_History
 {
     public class HistoryPageModel : PageModel
     {
-        public List<SearchInfo> ListSearch = new();
-		public void OnGet()
-		{
-			try
-			{
-				String connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=dev-test;Integrated Security=True";
-				using (SqlConnection connection = new(connectionString))
-				{
-					connection.Open();
-					String sql = "SELECT * FROM history ORDER BY search_time DESC";
-					using (SqlCommand command = new(sql, connection))
-					{
-						using (SqlDataReader reader = command.ExecuteReader())
-						{
-							int row_num = 1;
+        private readonly IConfiguration configuration;
 
-							while (reader.Read())
-							{
-								SearchInfo searchInfo = new();
-								searchInfo.num = row_num.ToString();
-								searchInfo.cityname = reader.GetString(0);
-								searchInfo.latitude = reader["latitude"] == DBNull.Value ? "-" : reader["latitude"].ToString();
-								searchInfo.longitude = reader["longitude"] == DBNull.Value ? "-" : reader["longitude"].ToString();
-								searchInfo.temperature = reader["temperature"] == DBNull.Value ? "-" : (reader.GetSqlDecimal(3) - 273.15m).ToString();
-								searchInfo.last_modify = reader["last_modify"] == DBNull.Value ? "-" : reader["last_modify"].ToString();
-								searchInfo.search_time = reader.GetSqlDateTime(5).ToString();
-								
-								ListSearch.Add(searchInfo);
-								row_num++;
-							}
-						}
+        public List<SearchInfo> ListSearch { get; set; }
 
-					}
+        public HistoryPageModel(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
 
-				}
+        public void OnGet()
+        {
+            try
+            {
+                string connectionString = configuration.GetConnectionString("DefaultConnection");
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = "SELECT * FROM history ORDER BY search_time DESC";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        ListSearch = new List<SearchInfo>();
 
-			}
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            int row_num = 1;
 
-			catch (Exception ex)
-			{
-				Console.WriteLine("Exception: ", ex.Message);
-			}
-			return;
-		}
+                            while (reader.Read())
+                            {
+                                SearchInfo searchInfo = new SearchInfo();
+                                searchInfo.num = row_num.ToString();
+                                searchInfo.cityname = reader.GetString(0);
+                                searchInfo.latitude = reader["latitude"] == DBNull.Value ? "-" : reader["latitude"].ToString();
+                                searchInfo.longitude = reader["longitude"] == DBNull.Value ? "-" : reader["longitude"].ToString();
+                                searchInfo.temperature = reader["temperature"] == DBNull.Value ? "-" : ((reader.GetSqlDecimal(3) - 273.15m).ToString());
+                                searchInfo.last_modify = reader["last_modify"] == DBNull.Value ? "-" : reader["last_modify"].ToString();
+                                searchInfo.search_time = reader.GetSqlDateTime(5).ToString();
 
-	}
+                                ListSearch.Add(searchInfo);
+                                row_num++;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
+        }
+    }
 
-	public class SearchInfo
-	{
-		public String num;
-		public String cityname;
-		public String latitude;
-		public String longitude;
-		public String temperature;
-		public String last_modify;
-		public String search_time;
-	}
+    public class SearchInfo
+    {
+        public string num;
+        public string cityname;
+        public string latitude;
+        public string longitude;
+        public string temperature;
+        public string last_modify;
+        public string search_time;
+    }
 }

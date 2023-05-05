@@ -1,6 +1,6 @@
 ﻿using System.Data.SqlTypes;
 
-namespace CityWeather.CityController
+namespace CityWeather.Models
 {
     public class CityDTO
     {
