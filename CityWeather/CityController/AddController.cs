@@ -24,8 +24,6 @@ public class AddController : Controller
         {
             String apiKey = _configuration["ApiSettings:ApiKey"];
             String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
-            String apiKey = _configuration["ApiSettings:ApiKey"];
-            String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
             Uri uri = new Uri(url);
 
             using HttpResponseMessage response = await _httpClient.GetAsync(uri);
