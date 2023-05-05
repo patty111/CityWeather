@@ -10,16 +10,22 @@ namespace CityWeather.WeatherController
     public class WeatherSearchController : Controller
     {
         String connectionString = "Data Source=.\\SQLExpress;Initial Catalog=dev-test;Integrated Security=True";
-
+        
+        private readonly IConfiguration _configuration;
         private static readonly HttpClient _httpClient = new();
-        private static readonly String _apiKey = "8cb8460525cde5bbc3891e8f3e150bfc";
+        public WeatherSearchController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> WSearch(double lat, double lon)
         {
             try
             {
-                String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={_apiKey}";
+                String apiKey = _configuration["WeatherAPIKey"];
+                String url = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
                 Uri uri = new Uri(url);
 
 

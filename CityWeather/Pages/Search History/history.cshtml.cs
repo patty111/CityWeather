@@ -31,7 +31,7 @@ namespace CityWeather.Pages.Search_History
 								searchInfo.cityname = reader.GetString(0);
 								searchInfo.latitude = reader["latitude"] == DBNull.Value ? "-" : reader["latitude"].ToString();
 								searchInfo.longitude = reader["longitude"] == DBNull.Value ? "-" : reader["longitude"].ToString();
-								searchInfo.temperature = reader["temperature"] == DBNull.Value ? "-" : reader["temperature"].ToString();
+								searchInfo.temperature = reader["temperature"] == DBNull.Value ? "-" : (reader.GetSqlDecimal(3) - 273.15m).ToString();
 								searchInfo.last_modify = reader["last_modify"] == DBNull.Value ? "-" : reader["last_modify"].ToString();
 								searchInfo.search_time = reader.GetSqlDateTime(5).ToString();
 								
