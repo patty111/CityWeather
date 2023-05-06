@@ -19,6 +19,13 @@ CREATE TABLE Cities(
 	last_modify DATETIME NOT NULL DEFAULT GETDATE()
 );
 
+CREATE TABLE weather (
+  search_time DATETIME NOT NULL DEFAULT GETDATE() PRIMARY KEY ,
+  latitude DECIMAL(9, 6) NOT NULL,
+  longitude DECIMAL(9, 6) NOT NULL,
+  temperature DECIMAL (10, 2) NOT NULL,
+  descript NVARCHAR(255)
+);
 
 CREATE TABLE history(
 	cityname NVARCHAR(255),
