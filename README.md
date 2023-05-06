@@ -3,7 +3,7 @@ Change databases connectionstring in `appsettings.json`
 
 
 Api description see Docs folder  
-[Demo Video Link](https://www.youtube.com/watch?v=CM-spAXMfZ4)
+[Demo Video Link](https://youtu.be/rQYHkT3IuLI)
 
 
 
