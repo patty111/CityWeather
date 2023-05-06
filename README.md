@@ -1,5 +1,5 @@
 # City Weather
-Change database connectionstring in `CityWeather/appsettings.json`
+Change databases connectionstring in `appsettings.json`
 
 
 Api description see Docs folder  
