@@ -1,2 +1,5 @@
 # City Weather
-See Docs folder
+Change databases connectionstring in `appsettings.json`
+
+
+Api description see Docs folder

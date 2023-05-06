@@ -13,9 +13,9 @@
 Delete search history.
   
 Two delete methods:  
-1. Delete last $n$ search history
-2. Delete all search history in $m$ minutes  
-   If both fields contain value, then first method will be executed.
+1. Delete last $n$ city search history
+2. Delete all city search histories in $m$ minutes  
+   If both fields (`delete_nums` and `minutes`) contain value, then first method will be executed.
 ### Request
 ```js
 DELETE /historydata?delete_nums=[n]&minutes=[m]

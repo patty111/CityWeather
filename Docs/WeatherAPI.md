@@ -31,12 +31,12 @@ Body:
 ```
 ---
 ## ShowWeatherController
-Show all weather search history if `true` is passed to "show"
+Show all weather search histories
 ### Request
 ```js
-GET /weathersearch?[show]
+GET /weathersearch/show
 Example Request:
-GET BaseURL/weathersearch?show=[true]
+GET BaseURL/weathersearch/show
 Status: 200 OK
 Body:
 [

@@ -68,13 +68,13 @@ The statement has been terminated.
 Delete city from database by cityname
 #### Request
 ```js
-DELETE /citydata?cityname={cityname}
+DELETE /citydata/{cityname}
 ```
 #### Response
 ##### Success
 ```js
 Example Request:
-DELETE BaseURL/citydata?cityname=Seoul
+DELETE BaseURL/citydata/Seoul
 Status: 204 NO CONTENT
 Body:
 
@@ -95,13 +95,13 @@ Body:
 Search city info from database by cityname 
 #### Request
 ```js
-GET /citydata?cityname={cityname}
+GET /citydata/{cityname}
 ```
 #### Response
 ##### Success
 ```js
 Example Request:
-GET BaseURL/citydata?cityname=New Orleans
+GET BaseURL/citydata/New Orleans
 Status: 200 OK
 Body:
 {
