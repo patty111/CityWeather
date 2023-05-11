@@ -1,5 +1,10 @@
 # City Weather
-Change databases connectionstring in `appsettings.json`
+This API set provides three endpoints:
+1. A CRUD endpoint for city data, allowing users to perform create, read, update, and delete operations to manage city data.  
+2. A weather search endpoint based on latitude and longitude, allowing users to query current weather information for a specified  location.  
+3. A search history endpoint, allowing users to view their previous search history.
+
+Change databases connection string in `appsettings.json`
 
 
 Api description see Docs folder  
