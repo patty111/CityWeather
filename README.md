@@ -4,7 +4,9 @@ This API set provides three endpoints:
 2. A weather search endpoint based on latitude and longitude, allowing users to query current weather information for a specified  location.  
 3. A search history endpoint, allowing users to view their previous search history.
 
-Change databases connection string in `appsettings.json`
+Using Sql Server as database.
+Change database's connection string in `appsettings.json`
+
 
 
 Api description see Docs folder  
